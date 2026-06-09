@@ -1,1 +1,8 @@
+# Dataset
 
+Music Mood Spectrogram Dataset downloaded using KaggleHub.
+
+Dataset Source:
+https://www.kaggle.com/datasets/akhilnshukla/music-mood-spectrogram
+
+The dataset contains spectrogram images representing different emotional categories of music used for CNN and VGG16-based mood classification.
