@@ -1,5 +1,5 @@
 # Music-Mood-Recognition
-# Music Mood Recognition
+
 
 ## Overview
 Music Mood Recognition is a deep learning project that classifies songs into emotional categories such as Happy, Sad, Romantic, Dramatic, and Aggressive using spectrogram images generated from audio signals.
