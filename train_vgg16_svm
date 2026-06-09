@@ -1,1 +1,70 @@
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications.vgg16 import preprocess_input
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.models import Model
+from sklearn.svm import SVC
+from sklearn.preprocessing import LabelEncoder
+import kagglehub
+import os
+import numpy as np
+import joblib
 
+MAX_IMAGES_PER_CLASS = 1000
+
+base_model = VGG16(weights='imagenet', include_top=True)
+model = Model(
+    inputs=base_model.input,
+    outputs=base_model.get_layer('fc2').output
+)
+
+dataset_path = kagglehub.dataset_download(
+    "akhilnshukla/music-mood-spectrogram"
+)
+
+features = []
+labels = []
+
+class_names = sorted(os.listdir(dataset_path))
+
+for label in class_names:
+
+    label_path = os.path.join(dataset_path,label)
+
+    for img_file in os.listdir(label_path)[:MAX_IMAGES_PER_CLASS]:
+
+        img_path = os.path.join(label_path,img_file)
+
+        img = load_img(img_path,target_size=(224,224))
+
+        x = img_to_array(img)
+
+        x = np.expand_dims(x,axis=0)
+
+        x = preprocess_input(x)
+
+        feat = model.predict(x)
+
+        features.append(feat.flatten())
+
+        labels.append(label)
+
+le = LabelEncoder()
+
+y = le.fit_transform(labels)
+
+svm = SVC(
+    kernel='linear',
+    probability=True
+)
+
+svm.fit(features,y)
+
+joblib.dump(
+    svm,
+    "svm_vgg_fc7_model.pkl"
+)
+
+joblib.dump(
+    le,
+    "label_encoder.pkl"
+)
