@@ -1,1 +1,10 @@
+# Trained Models
 
+This directory stores:
+
+- best_model.h5
+- final_model.h5
+- svm_vgg_fc7_model.pkl
+- label_encoder.pkl
+
+Models may not be uploaded because of GitHub size limitations.
